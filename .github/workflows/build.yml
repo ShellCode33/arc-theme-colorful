@@ -16,7 +16,7 @@ jobs:
         id: colors
         run: |
           echo -n "colors=" >> "$GITHUB_OUTPUT"
-          ls .github/workflows/palettes/*.conf | sed -E 's|.*/([a-z]+).conf|"\1"|' | jq -c -s . >> "$GITHUB_OUTPUT"
+          ls -1 .github/workflows/palettes/*.conf | grep -vE '(ref\.conf|common\.conf)' | sed -E 's|.*/([a-z]+).conf|"\1"|' | jq -c -s . >> "$GITHUB_OUTPUT"
   build:
     runs-on: ubuntu-latest
     needs:
