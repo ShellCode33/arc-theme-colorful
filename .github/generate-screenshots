@@ -1,0 +1,130 @@
+#!/usr/bin/python3
+
+"""
+This script generates screenshots for all the color variants.
+
+It is not intended to be used by someone else, don't expect it to work on your machine.
+"""
+
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+from time import sleep
+
+import requests
+
+THIS_SCRIPT_LOCATION = Path(__file__).resolve().parent
+
+THEMES_FOLDER = os.environ["HOME"] + "/.local/share/themes"
+GTK_CONFIG_FILE = os.environ["HOME"] + "/.config/gtk-3.0/settings.ini"
+RELEASE_DOWNLOAD_URL = (
+    "https://github.com/ShellCode33/arc-theme-colorful/releases/download"
+)
+SCREENSHORT_REGION = "1932,43 1896x1024"
+
+
+def main(release_version: str) -> None:
+    print("Save GTK config to /tmp/settings.ini...")
+    shutil.copy2(GTK_CONFIG_FILE, "/tmp/settings.ini")
+
+    colors = [
+        file.split(".")[0]
+        for file in os.listdir(THIS_SCRIPT_LOCATION / "workflows" / "palettes")
+        if file not in ("common.conf", "ref.conf")
+    ]
+
+    for color in colors:
+        install_theme(release_version, color)
+
+    for color in colors:
+        for is_dark in (True, False):
+            take_screenshot(color, is_dark)
+
+    print("Restore GTK config...")
+    shutil.copy2("/tmp/settings.ini", GTK_CONFIG_FILE)
+
+
+def install_theme(release_version: str, color: str) -> None:
+    archive_name = f"arc-theme-{color}.tar.gz"
+
+    resp = requests.get(RELEASE_DOWNLOAD_URL + f"/{release_version}/{archive_name}")
+
+    if resp.status_code != 200:
+        print(f"Failed to download {color}", file=sys.stderr)
+        sys.exit(1)
+
+    with open(
+        f"{THEMES_FOLDER}/{archive_name}",
+        "wb",
+    ) as file:
+        file.write(resp.content)
+
+    print(f"{archive_name} downloaded successfully")
+
+    subprocess.run(
+        ["/usr/bin/tar", "-xf", f"arc-theme-{color}.tar.gz"],
+        cwd=THEMES_FOLDER,
+        check=True,
+    )
+
+    print(f"{archive_name} extracted successfully")
+
+
+def take_screenshot(color: str, is_dark: bool) -> None:
+    theme_name = (
+        f"Arc-{color.capitalize()}-Dark"
+        if is_dark
+        else f"Arc-{color.capitalize()}-Lighter"
+    )
+
+    print("Taking screenshot for", theme_name, "...")
+
+    with open(GTK_CONFIG_FILE) as file:
+        gtk_config = file.read().splitlines()
+
+    with open(GTK_CONFIG_FILE, "w") as file:
+        for line in gtk_config:
+            if line.startswith("gtk-theme-name="):
+                file.write(f"gtk-theme-name={theme_name}")
+            else:
+                file.write(line)
+
+            file.write("\n")
+
+        file.flush()
+
+    print("Set theme using gsettings...")
+    subprocess.run(
+        [
+            "/usr/bin/gsettings",
+            "set",
+            "org.gnome.desktop.interface",
+            "gtk-theme",
+            theme_name,
+        ],
+        check=True,
+    )
+
+    # Wait for gsettings to apply the theme, just to be sure
+    sleep(1)
+
+    print("Spawning gtk3-widget-factory...")
+    proc = subprocess.Popen("/usr/bin/gtk3-widget-factory")
+    sleep(1)
+    screenshot_path = f"arc-dark-{color}.png" if is_dark else f"arc-{color}.png"
+    subprocess.run(
+        ["/usr/bin/grim", "-g", SCREENSHORT_REGION, screenshot_path],
+        check=True,
+    )
+    print(f"Saved screenshot to {screenshot_path}")
+    proc.kill()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} [RELEASE VERSION]", file=sys.stderr)
+        sys.exit(1)
+
+    main(sys.argv[1])
