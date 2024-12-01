@@ -10,6 +10,23 @@ THIS_SCRIPT_LOCATION = Path(__file__).resolve().parent
 
 
 def main(color: str) -> None:
+    patch_colors(color)
+    patch_build_script(color)
+
+
+def patch_build_script(color: str) -> None:
+    build_script_filepath = THIS_SCRIPT_LOCATION / ".." / ".." / "meson.build"
+
+    with build_script_filepath.open() as build_script_file:
+        content = build_script_file.read()
+
+    content = content.replace("Arc", "Arc-" + color.capitalize())
+
+    with build_script_filepath.open("w") as build_script_file:
+        build_script_file.write(content)
+
+
+def patch_colors(color: str) -> None:
     ref_palette_path = THIS_SCRIPT_LOCATION / Path("palettes/ref.conf")
     new_common_palette_path = THIS_SCRIPT_LOCATION / Path("palettes/common.conf")
     new_spe_palette_path = THIS_SCRIPT_LOCATION / Path("palettes/").joinpath(
