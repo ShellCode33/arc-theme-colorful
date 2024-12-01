@@ -1,0 +1,71 @@
+name: "CI"
+on:
+  push:
+  pull_request:
+
+jobs:
+  find-supported-colors:
+    runs-on: ubuntu-latest
+
+    outputs:
+      colors: ${{ steps.colors.outputs.colors }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find Colors
+        id: colors
+        run: |
+          echo -n "colors=" >> "$GITHUB_OUTPUT"
+          ls -1 .github/workflows/palettes/*.conf | grep -vE '(ref\.conf|common\.conf)' | sed -E 's|.*/([a-z]+).conf|"\1"|' | jq -c -s . >> "$GITHUB_OUTPUT"
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - find-supported-colors
+    strategy:
+      matrix:
+        color: ${{ fromJSON(needs.find-supported-colors.outputs.colors) }}
+    name: build ${{ matrix.color }} variant
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install System Dependencies
+        run: |
+          sudo apt install meson sassc inkscape
+
+      - name: Generate ${{ matrix.color }} Variant
+        env:
+          color: ${{ matrix.color }}
+        run: |
+          .github/workflows/patch-colors "$color"
+          meson setup --prefix=$(pwd)/target -Dcinnamon_version=5.4 -Dgnome_shell_version=45 build/
+          meson install -C build
+
+      - name: Create Package
+        if: github.ref == 'refs/heads/master'
+        env:
+          color: ${{ matrix.color }}
+        run: |
+          cd target/share/themes
+          tar -zcvf "arc-theme-$color.tar.gz" *
+
+      - name: Upload Artifacts
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: arc-theme-${{ matrix.color }}
+          path: target/share/themes/arc-theme-${{ matrix.color }}.tar.gz
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs:
+      - build
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          pattern: arc-theme-*
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: arc-theme-*
