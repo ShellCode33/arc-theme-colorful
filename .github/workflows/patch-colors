@@ -87,6 +87,9 @@ def main(color: str) -> None:
         color: merged_common_and_ref[key] for key, color in ref_palette.items()
     }
 
+    for color, replacement in replacements.items():
+        print(f"Will replace {color} with {replacement}")
+
     # Recursively walk through all files.
     for path in THIS_SCRIPT_LOCATION.parent.parent.joinpath("common").glob("**/*"):
         if not path.is_file():
@@ -116,9 +119,9 @@ def multireplace(string: str, replacements: dict[str, str]) -> str:
     rep_sorted = sorted(replacements, key=len, reverse=True)
     rep_escaped = map(re.escape, rep_sorted)
 
-    pattern = re.compile("|".join(rep_escaped))
+    pattern = re.compile("|".join(rep_escaped), flags=re.IGNORECASE)
 
-    return pattern.sub(lambda match: replacements[match.group(0)], string)
+    return pattern.sub(lambda match: replacements[match.group(0).lower()], string)
 
 
 if __name__ == "__main__":
