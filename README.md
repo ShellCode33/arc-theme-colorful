@@ -1,69 +1,98 @@
-# Arc Theme
+# Arc Theme Colorful
 
 Arc is a flat theme with transparent elements for GTK 3, GTK 2 and various desktop shells, window managers and applications. It's well suited for GTK based desktop environments such as GNOME, Cinnamon, Xfce, Unity, MATE, Budgie etc.
 
-The theme was originally designed and developed by [horst3180](https://github.com/horst3180/arc-theme), but the project has been unmaintained since May 2017.
+This project is a fork of [jnsh's repo](https://github.com/jnsh/arc-theme), which is the maintained fork of the [original Arc theme by horst3180](https://github.com/horst3180/arc-theme).
 
-This fork aims to keep the theme updated with new toolkit and desktop environment versions, resolve pre-existing issues, and improve and polish the theme while preserving the original visual design.
+What you will find here is basically the same Arc theme you are used to, but with different color variants.
 
-## Arc is available in four variants
+[!IMPORTANT]
+Only the GTK themes have been tested, but my guess is that the other themes should work fine as well.
 
-##### Arc
+## Installation
 
-![A screenshot of the Arc theme](https://raw.githubusercontent.com/jnsh/arc-theme/master/.github/arc-prv.png)
+Go to the [latest release](https://github.com/ShellCode33/arc-theme-colorful/releases/latest) and download the archive for the color your want.
 
-##### Arc-Darker
+The downloaded archive will contain all four variants: `Light`, `Dark`, `Lighter` and `Darker`.
 
-![A screenshot of the Arc-Darker theme](https://raw.githubusercontent.com/jnsh/arc-theme/master/.github/arc-darker-prv.png)
+Go to your `themes` folder and extract the archive in there:
 
-##### Arc-Dark
+```
+$ cd ~/.local/share/themes/
+$ mv ~/Downloads/arc-theme-COLOR.tar.gz .
+$ tar -xf arc-theme-COLOR.tar.gz
+```
 
-![A screenshot of the Arc-Dark theme](https://raw.githubusercontent.com/jnsh/arc-theme/master/.github/arc-dark-prv.png)
+You should see that four folders popped up:
 
-##### Arc-Lighter
+```
+$ ls ~/.local/share/themes/
+Arc-Red       Arc-Red-Darker   Arc-Red-Dark
+Arc-Red-Lighter  arc-theme-red.tar.gz
+```
 
-![A screenshot of the Arc-Lighter theme](https://raw.githubusercontent.com/jnsh/arc-theme/master/.github/arc-lighter-prv.png)
+You should now be able to change your theme the same way you are used to.
+
+## Color variants
+
+### Red
+
+![A screenshot of the Arc dark red theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-red.png)
+
+![A screenshot of the Arc light red theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-red.png)
+
+### Green
+
+![A screenshot of the Arc dark green theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-green.png)
+
+![A screenshot of the Arc light green theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-green.png)
+
+### Blue
+
+![A screenshot of the Arc dark blue theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-blue.png)
+
+![A screenshot of the Arc light blue theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-blue.png)
+
+### Yellow
+
+![A screenshot of the Arc dark yellow theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-yellow.png)
+
+![A screenshot of the Arc light yellow theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-yellow.png)
+
+### Orange
+
+![A screenshot of the Arc dark orange theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-orange.png)
+
+![A screenshot of the Arc light orange theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-orange.png)
+
+### Cyan
+
+![A screenshot of the Arc dark cyan theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-cyan.png)
+
+![A screenshot of the Arc light cyan theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-cyan.png)
+
+### Pink
+
+![A screenshot of the Arc dark pink theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-pink.png)
+
+![A screenshot of the Arc light pink theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-pink.png)
+
+### Purple
+
+![A screenshot of the Arc dark purple theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-dark-purple.png)
+
+![A screenshot of the Arc light purple theme](https://raw.githubusercontent.com/ShellCode33/arc-theme-colorful/master/.github/arc-purple.png)
 
 ## Supported toolkits and desktops
 
 Arc comes with themes for the following:
-* GTK 2
-* GTK 3
-* GTK 4
-* GNOME Shell >=3.28
-* Cinnamon >=3.8
-* Unity
-* Metacity
-* Xfwm
-* Plank
 
-## Installation
-
-#### Packages
-
-Arc Theme is available from the official software package repositories for many common Linux distributions and FOSS operating systems. Installing the theme by using the package manager of your operating system should be the preferred method in most cases.
-
-See [the wiki](https://github.com/jnsh/arc-theme/wiki/Packages) for non-exhaustive list of distribution packages, and some additional packages.
-
-#### Manual installation
-
-For installing the theme by compiling it from the source code, see [INSTALL.md](https://github.com/jnsh/arc-theme/blob/master/INSTALL.md) for build instructions, list of dependencies, build options and additional details.
-
-## Issues
-
-If you are experiencing any kind of issues, found a bug, or have a suggestion for improving the theme, please open an issue at <https://github.com/jnsh/arc-theme/issues>.
-
-Some known issues are addressed in [common problems](https://github.com/jnsh/arc-theme/wiki/Common-problems).
-
-## Contributing
-
-If you'd like to contribute to the project, open an pull request, or an issue for discussion. See [HACKING.md](https://github.com/jnsh/arc-theme/blob/master/HACKING.md) for further details.
-
-## License
-
-Arc is available under the terms of the GPL-3.0. See [COPYING](https://github.com/jnsh/arc-theme/blob/master/COPYING) for details.
-
-## Full Preview
-
-![A full screenshot of the Arc theme](http://i.imgur.com/tD1OBQ3.png)
-<sub>Screenshot Details: Icons: [Arc](https://github.com/horst3180/arc-icon-theme) | Launcher Icons based on [White Pixel Icons](http://darkdawg.deviantart.com/art/White-Pixel-Icons-252310560) | [Wallpaper](https://pixabay.com/photo-869593/) | Font: Futura Bk bt</sub>
+- GTK 2
+- GTK 3
+- GTK 4
+- GNOME Shell >=3.28
+- Cinnamon >=3.8
+- Unity
+- Metacity
+- Xfwm
+- Plank
