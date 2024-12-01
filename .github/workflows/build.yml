@@ -1,19 +1,35 @@
-name: "Build color variants"
+name: "CI"
 on:
   push:
   pull_request:
 
 jobs:
-  red:
-    name: generate red variants
+  find-supported-colors:
+    runs-on: ubuntu-latest
+
+    outputs:
+      colors: ${{ steps.colors.outputs.colors }}
+
+    steps:
+      - name: Find Colors
+        id: colors
+        run: |
+          ls .github/workflows/palettes/*.conf | sed -E 's|.*/([a-z]+).conf|"\1"|' | jq -s . >> "$GITHUB_OUTPUT"
+  build:
+    strategy:
+      matrix:
+        color: ${{ fromJSON(needs.find-supported-colors.outputs.colors) }}
+    name: build ${{ matrix.color }} variant
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt install meson sassc inkscape
-      - name: build
+      - name: Generate ${{ matrix.color }} Variant
+        env:
+          color: ${{ matrix.color }}
         run: |
-          .github/workflows/patch-colors red
+          .github/workflows/patch-colors "$color"
           meson setup --prefix=$(pwd)/target -Dcinnamon_version=5.4 -Dgnome_shell_version=45 build/
           meson install -C build
