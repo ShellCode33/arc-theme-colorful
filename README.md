@@ -6,8 +6,8 @@ This project is a fork of [jnsh's repo](https://github.com/jnsh/arc-theme), whic
 
 What you will find here is basically the same Arc theme you are used to, but with different color variants.
 
-[!IMPORTANT]
-Only the GTK themes have been tested, but my guess is that the other themes should work fine as well.
+> [!IMPORTANT]
+> Only the GTK themes have been tested, but my guess is that the other themes should work fine as well.
 
 ## Installation
 
